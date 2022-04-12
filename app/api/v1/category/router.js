@@ -8,7 +8,7 @@ const {
   deleteCategory,
 } = require("./controllers");
 
-const authenticateUser = require("../../../middlewares/auth.js");
+const { authenticateUser } = require("../../../../app/middlewares/auth");
 
 router.get("/", authenticateUser, getAllCategory);
 router.post("/", authenticateUser, createCategory);

@@ -10,7 +10,7 @@ const {
 
 const upload = require("../../../middlewares/multer");
 
-const authenticateUser = require("../../../middlewares/auth.js");
+const { authenticateUser } = require("../../../../app/middlewares/auth");
 
 router.get("/", authenticateUser, getAllSpeaker);
 router.post("/", authenticateUser, upload.single("avatar"), createSpeaker);

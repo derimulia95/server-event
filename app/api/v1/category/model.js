@@ -4,7 +4,7 @@ const CategorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "please provide name"],
+      required: [true, "Please provide name"],
       minlength: 3,
       maxlength: 50,
     },

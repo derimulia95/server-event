@@ -11,7 +11,7 @@ const {
 
 const upload = require("../../../middlewares/multer");
 
-const authenticateUser = require("../../../middlewares/auth.js");
+const { authenticateUser } = require("../../../../app/middlewares/auth");
 
 router.get("/", authenticateUser, getAllPayment);
 router.post("/", authenticateUser, upload.single("imageUrl"), createPayment);

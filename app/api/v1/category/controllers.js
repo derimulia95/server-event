@@ -51,27 +51,31 @@ const updateCategory = async (req, res, next) => {
     const { id: categoryId } = req.params;
     const { name } = req.body;
 
-    const check = await Category.findOne({ name, _id: { $ne: categoryId } });
+    const check = await Category.findOne({
+      name,
+      _id: { $ne: categoryId },
+    });
 
-    if (check) throw new customAPI.BadRequestError("Duplicate name category");
+    if (check) {
+      throw new customAPI.BadRequestError("Duplicate name category");
+    }
 
     const result = await Category.findOneAndUpdate(
       {
         _id: categoryId,
       },
-      {
-        name,
-        user: req.user.id,
-      },
+      { name, user: req.user.id },
       { new: true, runValidators: true }
     );
 
     if (!result) {
-      throw new customAPI.NotFoundError("No category with id" + categoryId);
+      throw new customAPI.NotFoundError("No Category with id :" + categoryId);
     }
+
     res.status(StatusCodes.OK).json({ data: result });
   } catch (err) {
     next(err);
+    console.log(err);
   }
 };
 

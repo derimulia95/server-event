@@ -5,7 +5,7 @@ const Transaction = require("../transactions/model");
 const { StatusCodes } = require("http-status-codes");
 
 const { createJWT, createTokenUser } = require("../../../utils");
-const CustomAPI = require("../../../errors");
+const customAPI = require("../../../errors");
 
 const signup = async (req, res, next) => {
   try {
@@ -99,12 +99,12 @@ const checkout = async (req, res, next) => {
     console.log(checkingEvent);
 
     if (!checkingEvent) {
-      throw new CustomAPI.NotFoundError("No Event with id :" + eventId);
+      throw new customAPI.NotFoundError("No Event with id :" + eventId);
     }
 
     // checking stock ticket event
     if (checkingEvent.stock === 0) {
-      throw new CustomAPI.NotFoundError("Stock event tidak mencukupi");
+      throw new customAPI.NotFoundError("Stock event tidak mencukupi");
     } else {
       checkingEvent.stock = checkingEvent.stock -= 1;
       await checkingEvent.save();
@@ -128,7 +128,7 @@ const checkout = async (req, res, next) => {
     const checkingPayment = await Payment.findOne({ _id: paymentId });
 
     if (!checkingPayment) {
-      throw new CustomAPI.NotFoundError("No Payment with id :" + paymentId);
+      throw new customAPI.NotFoundError("No Payment with id :" + paymentId);
     }
 
     const historyPayment = {
@@ -155,10 +155,25 @@ const checkout = async (req, res, next) => {
   }
 };
 
+const dashboard = async (req, res, next) => {
+  try {
+    const result = await Transaction.find({ participant: req.user.id });
+    if (!result) {
+      throw new CustomAPI.NotFoundError(
+        "No Participant with id :" + req.user.id
+      );
+    }
+    res.status(StatusCodes.OK).json({ data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   signup,
   signin,
   landingPage,
   detailPage,
   checkout,
+  dashboard,
 };

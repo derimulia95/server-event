@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { getAllTransaction } = require("./controller");
 
-const authenticateUser = require("../../../middlewares/auth.js");
+const { authenticateUser } = require("../../../../app/middlewares/auth");
 
 router.get("/", authenticateUser, getAllTransaction);
 
