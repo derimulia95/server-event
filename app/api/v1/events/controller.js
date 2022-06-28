@@ -107,7 +107,15 @@ const getOneEvent = async (req, res, next) => {
   try {
     const { id: eventId } = req.params;
 
-    const result = await Event.findOne({ _id: eventId });
+    const result = await Event.findOne({ _id: eventId })
+      .populate({
+        path: "category",
+        select: "_id name",
+      })
+      .populate({
+        path: "speaker",
+        select: { id: 1, foto: "$avatar", name: 1, role: 1 },
+      });
 
     if (!result) {
       throw new customAPI.BadRequestError.NotFoundError(
@@ -155,6 +163,10 @@ const updateEvent = async (req, res, next) => {
     }
 
     let result = await Event.findOne({ _id: eventId });
+
+    if (!result) {
+      throw new customAPI.NotFoundError("No Event with id:" + eventId);
+    }
 
     if (!req.file) {
       result.title = title;

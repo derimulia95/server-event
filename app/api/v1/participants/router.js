@@ -7,6 +7,7 @@ const {
   detailPage,
   checkout,
   dashboard,
+  payments,
 } = require("./controller");
 
 const { authenticateUser } = require("../../../../app/middlewares/auth");
@@ -17,5 +18,6 @@ router.get("/landing-page", landingPage);
 router.get("/landing-page/detail-page/:id", detailPage);
 router.post("/checkout", authenticateUser, checkout);
 router.get("/dashboard", authenticateUser, dashboard);
+router.get("/payments", payments);
 
 module.exports = router;

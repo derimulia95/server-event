@@ -73,7 +73,7 @@ const detailPage = async (req, res, next) => {
 
     const result = await Event.findOne({ _id: detailPageId, status: true })
       .select(
-        "_id speaker title date price venueName cover keyPoint tagline about"
+        "_id speaker title date price venueName cover keyPoint tagline about stock"
       )
       .populate({ path: "speaker", select: "_id name role avatar" });
     if (!result) {
@@ -169,6 +169,15 @@ const dashboard = async (req, res, next) => {
   }
 };
 
+const payments = async (req, res, next) => {
+  try {
+    const result = await Payment.find({ status: true });
+    res.status(StatusCodes.OK).json({ data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   signup,
   signin,
@@ -176,4 +185,5 @@ module.exports = {
   detailPage,
   checkout,
   dashboard,
+  payments,
 };

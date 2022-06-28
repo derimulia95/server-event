@@ -35,11 +35,11 @@ const getAllTransaction = async (req, res, next) => {
       };
     }
 
-    const result = await Transaction.find()
+    const result = await Transaction.find(condition)
       .limit(limit)
       .skip(limit * (page - 1));
 
-    const count = await Transaction.find(condition);
+    const count = await Transaction.countDocuments(condition);
     res
       .status(200)
       .json({ data: result, pages: Math.ceil(count / limit), total: count });
